@@ -1,26 +1,46 @@
 #include "methods.hpp"
 #include "utils.hpp"
 
-double **addMatrices(const double *aMatrix[constants::n], 
-const double *bMatrix[constants::n]) {
-    double **sumMatrix = new double*[constants::n];
+double **addMatrices(double *aMatrix[constants::n],
+	double *bMatrix[constants::n]) {
+	auto sumMatrix = new double *[constants::n];
 
-    for (int i = 0; i < constants::n; i++) {
-        sumMatrix[i] = new double[constants::n];
-        for (int j = 0; j < constants::n; j++) {
-            sumMatrix[j][i] = aMatrix[j][i] + bMatrix[j][i];
-        }
-    }
-    return sumMatrix;
+	for (auto i = 0; i < constants::n; i++) {
+		sumMatrix[i] = new double[constants::n];
+		for (auto j = 0; j < constants::n; j++) {
+			sumMatrix[i][j] = aMatrix[i][j] + bMatrix[i][j];
+		}
+	}
+	return sumMatrix;
+}
+
+double **multiplyMatrices(double *lhMatrix[constants::n],
+	double *rhMatrix[constants::n]) {
+	auto productMatrix = new double *[constants::n];
+	double cellValue;
+	for (auto i = 0; i < constants::n; i++) {
+		productMatrix[i] = new double[constants::n];
+		for (auto j = 0; j < constants::n; j++) {
+			cellValue = 0.0;
+			for (auto k = 0; k < constants::n; k++) {
+				cellValue += lhMatrix[k][j] * rhMatrix[i][k];
+			}
+			productMatrix[i][j] = cellValue;
+		}
+	}
+	return productMatrix;
 }
 
 double computeEuclideanNorm(double vector[]) {
-    
+	double norm = 0.0;
+
+
+	return norm;
 }
 
 double *computeJacobiMethod(double *matrix[constants::n], double vector[]) {
-    double xVector[constants::n];
+	double *xVector = new double[constants::n];
 
 
-    return xVector;
+	return xVector;
 }

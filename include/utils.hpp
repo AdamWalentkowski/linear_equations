@@ -8,5 +8,5 @@
 
 
 
-void test_matrix(double *matrix[constants::n], std::string name);
+void test_matrix(double *matrix[constants::nTest], std::string name);
 void test_vector(double vector[], std::string name);
