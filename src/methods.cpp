@@ -33,9 +33,10 @@ double **multiplyMatrices(double *lhMatrix[constants::n],
 
 double computeEuclideanNorm(double vector[]) {
 	double norm = 0.0;
-
-
-	return norm;
+	for (int i = 0; i < constants::n; i++) {
+		norm += vector[i] * vector[i];
+	}
+	return sqrt(norm);
 }
 
 double *computeJacobiMethod(double *matrix[constants::n], double vector[]) {
