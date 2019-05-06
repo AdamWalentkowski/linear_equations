@@ -49,9 +49,31 @@ double *multiplyMatVec(double *matrix[constants::n], double vector[]) {
 	return matVec;
 }
 
-double *computeJacobiMethod(double *matrix[constants::n], double vector[]) {
-	double *xVector = new double[constants::n];
+double *computeJacobiMethod(double *matrix[constants::n], double *lMatrix[constants::n],
+	double *uMatrix[constants::n], double *dMatrix[constants::n], double vector[]) {
+	auto xVector = new double *[2];
+	xVector[0] = new double[constants::n] { 1.0 };
+	xVector[1] = new double[constants::n];
+	auto residuumVector = new double[constants::n] { 1.0 };
+	auto invertedDMatrix = new double *[constants::n];
+	auto negativeInvertedDMatrix = new double *[constants::n];
+	for (auto i = 0; i < constants::n; i++) {
+		invertedDMatrix[i] = new double[constants::n] { 0.0 };
+		negativeInvertedDMatrix[i] = new double[constants::n] { 0.0 };
+		invertedDMatrix[i][i] = 1.0 / dMatrix[i][i];
+		negativeInvertedDMatrix[i][i] = invertedDMatrix[i][i] * -1.0;
+	}
+	auto invDBMatVec = multiplyMatVec(invertedDMatrix, vector);
+	auto LUSumMat = addMatrices(lMatrix, uMatrix);
+	double *LUSumXMatVec;
+	double *invDLUSumXMatVec;
+	double norm = 1.0;
+	int iteration = 0;
+	while (norm > constants::eps) {
+		LUSumXMatVec = multiplyMatVec(LUSumMat, xVector[0]);
+		invDLUSumXMatVec = multiplyMatVec(invertedDMatrix, LUSumXMatVec);
+		//TODO: sum 2 MatVecs
+	}
 
-
-	return xVector;
+	return xVector[1];
 }

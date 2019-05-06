@@ -20,13 +20,11 @@ int main() {
 	auto start = std::chrono::system_clock::now();
 
 	for (auto i = 0; i < constants::n; i++) {
+		coefficientMat[i][i] = constants::a1;
+		diagonalMat[i][i] = coefficientMat[i][i];
 		for (auto j = 0; j < constants::n; j++) {
 			switch (i - j) //i represents row number, j represents column number
 			{
-			case 0:
-				coefficientMat[j][i] = constants::a1;
-				diagonalMat[j][i] = coefficientMat[j][i];
-				break;
 			case 1:
 				coefficientMat[j][i] = constants::a2;
 				lowerTMat[j][i] = coefficientMat[j][i];
