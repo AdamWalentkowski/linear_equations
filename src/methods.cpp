@@ -1,6 +1,14 @@
 #include "methods.hpp"
 #include "utils.hpp"
 
+double *addVectors(double aVector[], double bVector[]) {
+	auto sumVector = new double[constants::n]{0.0};
+	for (auto i = 0; i < constants::n; i++) {
+		sumVector[i] = aVector[i] + bVector[i];
+	}
+	return sumVector;
+}
+
 double **addMatrices(double *aMatrix[constants::n],
 	double *bMatrix[constants::n]) {
 	auto sumMatrix = new double *[constants::n];
@@ -49,8 +57,9 @@ double *multiplyMatVec(double *matrix[constants::n], double vector[]) {
 	return matVec;
 }
 
-double *computeJacobiMethod(double *matrix[constants::n], double *lMatrix[constants::n],
-	double *uMatrix[constants::n], double *dMatrix[constants::n], double vector[]) {
+double *computeJacobiMethod(double *matrix[constants::n], 
+	double *lMatrix[constants::n], double *uMatrix[constants::n], 
+	double *dMatrix[constants::n], double vector[]) {
 	auto xVector = new double *[2];
 	xVector[0] = new double[constants::n] { 1.0 };
 	xVector[1] = new double[constants::n];
@@ -66,13 +75,14 @@ double *computeJacobiMethod(double *matrix[constants::n], double *lMatrix[consta
 	auto invDBMatVec = multiplyMatVec(invertedDMatrix, vector);
 	auto LUSumMat = addMatrices(lMatrix, uMatrix);
 	double *LUSumXMatVec;
-	double *invDLUSumXMatVec;
+	double *negativeInvDLUSumXMatVec;
+	double *resultMatVec;
 	double norm = 1.0;
 	int iteration = 0;
 	while (norm > constants::eps) {
 		LUSumXMatVec = multiplyMatVec(LUSumMat, xVector[0]);
-		invDLUSumXMatVec = multiplyMatVec(invertedDMatrix, LUSumXMatVec);
-		//TODO: sum 2 MatVecs
+		negativeInvDLUSumXMatVec = multiplyMatVec(
+			negativeInvertedDMatrix, LUSumXMatVec);
 	}
 
 	return xVector[1];
