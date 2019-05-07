@@ -1,11 +1,10 @@
-#include "utils.hpp"
-#include "methods.hpp"
-#include "constants.hpp"
+#include "../include/constants.hpp"
+#include "../include/methods.hpp"
+#include "../include/utils.hpp"
 
 
 
 int main() {
-
 	double termVec[constants::n];
 	double *coefficientMat[constants::n], *lowerTMat[constants::n],
 		 *upperTMat[constants::n], *diagonalMat[constants::n];
@@ -48,6 +47,8 @@ int main() {
 		termVec[i] = sin(((double)i + 1.0) * (constants::f + 1));
 	}
 
+	auto resultVector = computeJacobiMethod(coefficientMat, lowerTMat, upperTMat, diagonalMat, termVec);
+
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> time_result = end - start;
 	std::cout << "Time: " << time_result.count() << " seconds." << std::endl;
@@ -73,6 +74,5 @@ int main() {
 	//test_matrix(cMatrix, "Test sum");
 	//double **dMatrix = multiplyMatrices(aMatrix, bMatrix);
 	//test_matrix(dMatrix, "Test product");
-	system("pause");
 	return 0;
 }

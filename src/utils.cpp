@@ -1,4 +1,4 @@
-#include "utils.hpp"
+#include "../include/utils.hpp"
 
 void test_matrix(double *matrix[constants::nTest], std::string name = "<Unnamed>") {
 	std::cout << std::endl << name + ": " << std::endl;

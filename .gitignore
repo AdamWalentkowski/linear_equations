@@ -1,3 +1,5 @@
 ipch/
 .vs/
 CppProperties.json
+*.vcxproj*
+Debug/
