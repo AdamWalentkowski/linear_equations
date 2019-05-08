@@ -14,38 +14,36 @@ int main() {
 		lowerTMat[i] = new double[constants::n]{ 0.0 };
 		upperTMat[i] = new double[constants::n]{ 0.0 };
 		diagonalMat[i] = new double[constants::n]{ 0.0 };
-	}
+		
+		termVec[i] = sin(((double)i + 1.0) * (constants::f + 1));
 
-	auto start = std::chrono::system_clock::now();
-
-	for (auto i = 0; i < constants::n; i++) {
 		coefficientMat[i][i] = constants::a1;
 		diagonalMat[i][i] = coefficientMat[i][i];
 		for (auto j = 0; j < constants::n; j++) {
-			switch (i - j) //i represents row number, j represents column number
-			{
-			case 1:
-				coefficientMat[j][i] = constants::a2;
-				lowerTMat[j][i] = coefficientMat[j][i];
-				break;
+			switch (i - j) { //i represents row number, j represents column number
 			case -1:
-				coefficientMat[j][i] = constants::a2;
-				upperTMat[j][i] = coefficientMat[j][i];
+				coefficientMat[i][j] = constants::a2;
+				lowerTMat[i][j] = coefficientMat[i][j];
 				break;
-			case 2:
-				coefficientMat[j][i] = constants::a3;
-				lowerTMat[j][i] = coefficientMat[j][i];
+			case 1:
+				coefficientMat[i][j] = constants::a2;
+				upperTMat[i][j] = coefficientMat[i][j];
 				break;
 			case -2:
-				coefficientMat[j][i] = constants::a3;
-				upperTMat[j][i] = coefficientMat[j][i];
+				coefficientMat[i][j] = constants::a3;
+				lowerTMat[i][j] = coefficientMat[i][j];
+				break;
+			case 2:
+				coefficientMat[i][j] = constants::a3;
+				upperTMat[i][j] = coefficientMat[i][j];
 				break;
 			default:
 				break;
 			}
 		}
-		termVec[i] = sin(((double)i + 1.0) * (constants::f + 1));
 	}
+
+	auto start = std::chrono::system_clock::now();
 
 	auto resultVector = computeJacobiMethod(coefficientMat, lowerTMat, upperTMat, diagonalMat, termVec);
 
@@ -74,5 +72,6 @@ int main() {
 	//test_matrix(cMatrix, "Test sum");
 	//double **dMatrix = multiplyMatrices(aMatrix, bMatrix);
 	//test_matrix(dMatrix, "Test product");
+	system("pause");
 	return 0;
 }

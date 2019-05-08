@@ -89,13 +89,15 @@ double *computeJacobiMethod(double *aMatrix[constants::n],
 	while (norm > constants::eps) {
 		l_U_x = multiplyMatVec(l_U, xVector);	// (L + U) * x
 		dInvNeg_L_U_x = multiplyMatVec(dInvNeg, l_U_x);	// -D^-1 * (L + U) * x
-		xVector = addVectors(dInvNeg_L_U_x, dInv_b);	// -D^-1 * (L + U) * x + D^-1 * b
+		xVector = addVectors(dInvNeg_L_U_x, dInv_b);
+		// -D^-1 * (L + U) * x + D^-1 * b
 		a_x = multiplyMatVec(aMatrix, xVector); // A * x
 		residuumVector = addVectors(a_x, bNeg); // res = A * x - b
 		norm = computeEuclideanNorm(residuumVector);
+
 		++iteration;
-			std::cout << "Iteration no.: " << iteration << " norm: " 
-				<< norm << std::endl;
+		std::cout << "Iteration no.: " << iteration << " norm: " 
+			<< norm << std::endl;
 	}
 	return xVector;
 }
