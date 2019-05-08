@@ -7,6 +7,6 @@ namespace constants {
 	static const double a2 = -1.0;
 	static const double a3 = -1.0;
 	static const int n = 917;
-	static const int nTest = 3;
+	static const int nTest = 20;
 	static const double eps = 1e-9;
 };
