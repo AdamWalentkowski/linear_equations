@@ -4,7 +4,8 @@
 
 
 
-int main() {
+int main() 
+{
 	double termVec[constants::n];
 	double *coefficientMat[constants::n], *lowerTMat[constants::n],
 		 *upperTMat[constants::n], *diagonalMat[constants::n];
@@ -20,22 +21,18 @@ int main() {
 		coefficientMat[i][i] = constants::a1;
 		diagonalMat[i][i] = coefficientMat[i][i];
 		for (auto j = 0; j < constants::n; j++) {
-			switch (i - j) { //i represents row number, j represents column number
+			switch (i - j) { // i represents column number, j represents row number
 			case -1:
-				coefficientMat[i][j] = constants::a2;
-				lowerTMat[i][j] = coefficientMat[i][j];
+				lowerTMat[i][j] = coefficientMat[i][j] = constants::a2;
 				break;
 			case 1:
-				coefficientMat[i][j] = constants::a2;
-				upperTMat[i][j] = coefficientMat[i][j];
+				upperTMat[i][j] = coefficientMat[i][j] = constants::a2;
 				break;
 			case -2:
-				coefficientMat[i][j] = constants::a3;
-				lowerTMat[i][j] = coefficientMat[i][j];
+				lowerTMat[i][j] = coefficientMat[i][j] = constants::a3;
 				break;
 			case 2:
-				coefficientMat[i][j] = constants::a3;
-				upperTMat[i][j] = coefficientMat[i][j];
+				upperTMat[i][j] = coefficientMat[i][j] = constants::a3;
 				break;
 			default:
 				break;
