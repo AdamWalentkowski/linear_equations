@@ -15,6 +15,9 @@ double computeEuclideanNorm(double vector[]);
 double *computeJacobiMethod(double *aMatrix[constants::n], 
 	double *lMatrix[constants::n], double *uMatrix[constants::n], 
 	double *dMatrix[constants::n], double bVector[]);
+
+double* applyForwardSubstitution(double* lMatrix[constants::n],
+	double bVector[]);
 	
 double *computeGaussSeidelMethod(double *aMatrix[constants::n], 
 	double *lMatrix[constants::n], double *uMatrix[constants::n], 

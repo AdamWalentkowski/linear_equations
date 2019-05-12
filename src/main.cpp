@@ -67,6 +67,5 @@ int main()
 	//test_matrix(cMatrix, "Test sum");
 	//double **dMatrix = multiplyMatrices(aMatrix, bMatrix);
 	//test_matrix(dMatrix, "Test product");
-	system("pause");
 	return 0;
 }

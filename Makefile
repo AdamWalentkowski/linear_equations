@@ -14,7 +14,7 @@ else
 EXECUTABLE	:= main
 endif
 
-all: $(BIN)/$(EXECUTABLE)
+all:	$(BIN)/$(EXECUTABLE)
 
 clean:
 	$(RM) $(BIN)/$(EXECUTABLE)
