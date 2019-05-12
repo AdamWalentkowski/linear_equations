@@ -17,21 +17,19 @@ int main()
 		diagonalMat[i] = new double[constants::n]{ 0.0 };
 		
 		termVec[i] = sin(((double)i + 1.0) * (constants::f + 1));
-
-		coefficientMat[i][i] = constants::a1;
-		diagonalMat[i][i] = coefficientMat[i][i];
+		diagonalMat[i][i] = coefficientMat[i][i] = constants::a1;
 		for (auto j = 0; j < constants::n; j++) {
-			switch (i - j) { // i represents column number, j represents row number
-			case -1:
+			switch (i - j) { // i represents row number, j represents column number
+			case 1:
 				lowerTMat[i][j] = coefficientMat[i][j] = constants::a2;
 				break;
-			case 1:
+			case -1:
 				upperTMat[i][j] = coefficientMat[i][j] = constants::a2;
 				break;
-			case -2:
+			case 2:
 				lowerTMat[i][j] = coefficientMat[i][j] = constants::a3;
 				break;
-			case 2:
+			case -2:
 				upperTMat[i][j] = coefficientMat[i][j] = constants::a3;
 				break;
 			default:
@@ -48,9 +46,9 @@ int main()
 	std::chrono::duration<double> time_result = end - start;
 	std::cout << "Time: " << time_result.count() << " seconds." << std::endl;
 
-	// test_matrix(coefficientMat, "Coefficients");
+	test_matrix(coefficientMat, "Coefficients");
 	// test_matrix(upperTMat, "Upper");	
-	// test_matrix(lowerTMat, "Lower");
+	test_matrix(lowerTMat, "Lower");
 	// test_matrix(diagonalMat, "Diag");
 	//double *aMatrix[constants::nTest],  *bMatrix[constants::nTest];
 	//std::srand((size_t)time(NULL));

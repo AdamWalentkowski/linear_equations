@@ -4,7 +4,7 @@ void test_matrix(double *matrix[constants::nTest], std::string name = "<Unnamed>
 	std::cout << std::endl << name + ": " << std::endl;
 	for (auto i = 0; i < constants::nTest; i++) {
 		for (auto j = 0; j < constants::nTest; j++) {
-			std::cout << matrix[j][i] << " ";
+			std::cout << matrix[i][j] << " ";
 		}
 		std::cout << std::endl;
 	}

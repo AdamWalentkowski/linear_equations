@@ -2,34 +2,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/bin/main.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": true,
-            "preLaunchTask": "build",
-            "linux": {
-                "MIMode": "gdb"
-            },
-            "osx": {
-                "MIMode": "lldb"
-            },
-            "windows": {
-                "MIMode": "gdb",
-                "miDebuggerPath": "C:\\Program Files (x86)\\minGW\\mingw32\\bin\\gdb.exe"
-            }
-        },
-        {
             "name": "Debug",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/main.exe",
             "args": [],
-            "stopAtEntry": true,
+            "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],
             "externalConsole": true,
@@ -41,8 +19,7 @@
                 "MIMode": "lldb"
             },
             "windows": {
-                "MIMode": "gdb",
-                "miDebuggerPath": "C:\\Program Files (x86)\\minGW\\mingw32\\bin\\gdb.exe"
+                "MIMode": "gdb"
             }
         }
     ]

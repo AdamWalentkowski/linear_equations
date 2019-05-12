@@ -56,7 +56,7 @@ double *multiplyMatVec(double *matrix[constants::n], double vector[])
 	double *matVec = new double[constants::n]{ 0.0 };
 	for (auto i = 0; i < constants::n; i++) {
 		for (auto j = 0; j < constants::n; j++) {
-			matVec[i] += matrix[j][i] * vector[j];
+			matVec[i] += matrix[i][j] * vector[j];
 		}
 	}
 	return matVec;
@@ -100,4 +100,33 @@ double *computeJacobiMethod(double *aMatrix[constants::n],
 			<< norm << std::endl;
 	}
 	return xVector;
+}
+
+double *applyForwardSubstitution(double *lMatrix[constants::n],
+	double bVector[])
+{
+	double lhSum;
+	double *resultVector = new double[constants::n];
+	for (auto i = 0; i < constants::n; i++) {
+		lhSum = 0;
+		for (auto j = 0; j < i; j++) {
+			lhSum += lMatrix[i][j] * resultVector[j];
+		}
+		resultVector[i] = (bVector[i] - lhSum) / lMatrix[i][i];
+	}
+	
+	return resultVector;
+}
+
+double *computeGaussSeidelMethod(double *aMatrix[constants::n], 
+	double *lMatrix[constants::n], double *uMatrix[constants::n], 
+	double *dMatrix[constants::n], double bVector[])
+{
+	auto xVector = new double[constants::n] { 1.0 };
+	auto residuumVector = new double[constants::n] { 1.0 };	//res
+	
+	auto d_L = addMatrices(dMatrix, lMatrix);	//D + L
+	//auto d_L
+	return xVector;
+
 }
