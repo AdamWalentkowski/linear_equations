@@ -1,6 +1,8 @@
 #include "../include/utils.hpp"
+#include "../include/matrix.hpp"
+#include "../include/vector.hpp"
 
-void test_matrix(double *matrix[constants::nTest], std::string name = "<Unnamed>") {
+void test_matrix(const Matrix &matrix, std::string name) {
 	std::cout << std::endl << name + ": " << std::endl;
 	for (auto i = 0; i < constants::nTest; i++) {
 		for (auto j = 0; j < constants::nTest; j++) {
@@ -11,7 +13,7 @@ void test_matrix(double *matrix[constants::nTest], std::string name = "<Unnamed>
 	std::cout << std::endl;
 }
 
-void test_vector(double vector[], std::string name = "<Unnamed>") {
+void test_vector(const Vector &vector, std::string name) {
 	std::cout << std::endl << name + ": " << std::endl;
 	for (auto i = 0; i < constants::nTest; i++) {
 		std::cout << vector[i] << " ";
