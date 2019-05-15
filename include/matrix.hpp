@@ -14,11 +14,14 @@ public:
 	double *&operator [] (const size_t &index)       { return matrix[index]; }
 	double *&operator [] (const size_t &index) const { return matrix[index]; }
 
+	/* In this class module I purposefully do not use above operators,
+	as they tend to drop the performance in n^2 / n^3 methods */
+
 	Matrix operator + (const Matrix &otherMatrix) {
 		Matrix sumMatrix;
 		for (auto i = 0; i < constants::n; i++) {
 			for (auto j = 0; j < constants::n; j++) {
-				sumMatrix[i][j] = matrix[i][j] + otherMatrix[i][j];
+				sumMatrix.matrix[i][j] = matrix[i][j] + otherMatrix.matrix[i][j];
 			}
 		}
 		return sumMatrix;
@@ -31,9 +34,9 @@ public:
 			for (auto j = 0; j < constants::n; j++) {
 				cellValue = 0.0;
 				for (auto k = 0; k < constants::n; k++) {
-					cellValue += matrix[k][j] * rhsMatrix[i][k];
+					cellValue += matrix[k][j] * rhsMatrix.matrix[i][k];
 				}
-				productMatrix[i][j] = cellValue;
+				productMatrix.matrix[i][j] = cellValue;
 			}
 		}
 		return productMatrix;
@@ -49,11 +52,26 @@ public:
 		return matVec;
 	}
 
+	Matrix &operator <= (const Matrix &rhsMatrix) {
+		if (this == &rhsMatrix) {
+			return *this;
+		}
+		for (auto i = 0; i < constants::n; i++) {
+			for (auto j = 0; j < constants::n; j++)
+			{
+				matrix[i][j] = rhsMatrix.matrix[i][j];
+			}
+		}
+		return *this;
+	}
+
 	Matrix operator ~ () {
 		Matrix negativeMatrix;
 		for (auto i = 0; i < constants::n; i++) {
 			for (auto j = 0; j < constants::n; j++) {
-				negativeMatrix[i][j] = matrix[i][j] * -1.0;
+				if (matrix[i][j] != 0.0) {
+					negativeMatrix.matrix[i][j] = matrix[i][j] * -1.0;
+				}
 			}
 		}
 		return negativeMatrix;

@@ -9,13 +9,12 @@ Vector::Vector(double fill) {
 
 Vector::Vector(const Vector &v) {
 	vector = new double[constants::n];
-	for (auto i = 0; i < constants::n; i++)
-	{
+	for (auto i = 0; i < constants::n; i++) {
 		vector[i] = v.vector[i];
 	}
 }
 
-double Vector::computeEuclideanNorm(const Vector &vector)
+double Vector::computeEuclideanNorm()
 {
 	double norm = 0.0;
 	for (auto i = 0; i < constants::n; i++) {

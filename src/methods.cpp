@@ -1,141 +1,59 @@
 #include "../include/methods.hpp"
 
-//double *addVectors(double aVector[], double bVector[])
-//{
-//	auto sumVector = new double[constants::n]{0.0};
-//	for (auto i = 0; i < constants::n; i++) {
-//		sumVector[i] = aVector[i] + bVector[i];
-//	}
-//	return sumVector;
-//}
-
-//double **addMatrices(double *aMatrix[constants::n],
-//	double *bMatrix[constants::n])
-//{
-//	auto sumMatrix = new double *[constants::n];
-//	for (auto i = 0; i < constants::n; i++) {
-//		sumMatrix[i] = new double[constants::n];
-//		for (auto j = 0; j < constants::n; j++) {
-//			sumMatrix[i][j] = aMatrix[i][j] + bMatrix[i][j];
-//		}
-//	}
-//	
-//	return sumMatrix;
-//}
-//
-//double **multiplyMatrices(double *lhMatrix[constants::n],
-//	double *rhMatrix[constants::n])
-//{
-//	auto productMatrix = new double *[constants::n];
-//	double cellValue;
-//	for (auto i = 0; i < constants::n; i++) {
-//		productMatrix[i] = new double[constants::n];
-//		for (auto j = 0; j < constants::n; j++) {
-//			cellValue = 0.0;
-//			for (auto k = 0; k < constants::n; k++) {
-//				cellValue += lhMatrix[k][j] * rhMatrix[i][k];
-//			}
-//			productMatrix[i][j] = cellValue;
-//		}
-//	}
-//	return productMatrix;
-//}
-
-//double computeEuclideanNorm(double vector[]) 
-//{
-//	double norm = 0.0;
-//	for (auto i = 0; i < constants::n; i++) {
-//		norm += vector[i] * vector[i];
-//	}
-//	return sqrt(norm);
-//}
-
-double *multiplyMatVec(double *matrix[constants::n], double vector[])
+void computeJacobiMethod(Matrix aMatrix, Matrix lMatrix, 
+	Matrix uMatrix, Matrix dMatrix, Vector bVector)
 {
-	double *matVec = new double[constants::n]{ 0.0 };
+	Vector xVector(1.0);
+	Matrix dInvMatrix;	// D^-1
 	for (auto i = 0; i < constants::n; i++) {
-		for (auto j = 0; j < constants::n; j++) {
-			matVec[i] += matrix[i][j] * vector[j];
-		}
+		dInvMatrix[i][i] = 1.0 / dMatrix[i][i];
 	}
-	return matVec;
+
+	double norm = 1.0;
+	int iteration = 0;
+	auto constantMatVec = dInvMatrix * bVector;
+	auto coefficientMatVec = ~(dInvMatrix * (lMatrix + uMatrix));
+								//-D^-1 * (L + U)
+	while (norm > constants::eps) {
+		xVector <= (coefficientMatVec * xVector) + constantMatVec;
+		// x(k+1) = -D^-1 * (L + U) * x(k) + (D^-1 * b)
+		norm = (aMatrix * xVector + (~bVector)).computeEuclideanNorm();
+				//res = A * x - b
+		++iteration;
+		std::cout << "Iteration no.: " << iteration << " norm: " 
+			<< norm << std::endl;
+	}
 }
 
-//double *computeJacobiMethod(double *aMatrix[constants::n], 
-//	double *lMatrix[constants::n], double *uMatrix[constants::n], 
-//	double *dMatrix[constants::n], double bVector[])
-//{
-//	auto xVector = new double[constants::n] { 1.0 };
-//	auto residuumVector = new double[constants::n] { 1.0 };	//res
-//	auto bNegVector = new double[constants::n] { -1.0 };
-//	auto dInvMatrix = new double *[constants::n];	// D^-1
-//	auto dInvNeg = new double *[constants::n];	// -D^-1
-//	
-//	for (auto i = 0; i < constants::n; i++) {
-//		dInvMatrix[i] = new double[constants::n] { 0.0 };
-//		dInvNeg[i] = new double[constants::n] { 0.0 };
-//
-//		dInvMatrix[i][i] = 1.0 / dMatrix[i][i];
-//		dInvNeg[i][i] = dInvMatrix[i][i] * -1.0;
-//	}
-//
-//	auto dInv_b = multiplyMatVec(dInvMatrix, bVector);	// D^-1 * b
-//	auto noDiagMatrix = addMatrices(lMatrix, uMatrix);	// L + U
-//	double *l_U_x, *dInvNeg_L_U_x, *a_x;
-//	double norm = 1.0;
-//	int iteration = 0;
-//
-//	while (norm > constants::eps) {
-//		l_U_x = multiplyMatVec(noDiagMatrix, xVector);	// (L + U) * x
-//		dInvNeg_L_U_x = multiplyMatVec(dInvNeg, l_U_x);	// -D^-1 * (L + U) * x
-//		xVector = addVectors(dInvNeg_L_U_x, dInv_b);
-//		// -D^-1 * (L + U) * x + D^-1 * b
-//		a_x = multiplyMatVec(aMatrix, xVector); // A * x
-//		residuumVector = addVectors(a_x, bNegVector); // res = A * x - b
-//		norm = computeEuclideanNorm(residuumVector);
-//
-//		++iteration;
-//		std::cout << "Iteration no.: " << iteration << " norm: " 
-//			<< norm << std::endl;
-//	}
-//	return xVector;
-//}
-//
-//double *applyForwardSubstitution(double *lMatrix[constants::n],
-//	double bVector[])
-//{
-//	double lhSum;
-//	double *resultVector = new double[constants::n];
-//	for (auto i = 0; i < constants::n; i++) {
-//		lhSum = 0;
-//		for (auto j = 0; j < i; j++) {
-//			lhSum += lMatrix[i][j] * resultVector[j];
-//		}
-//		resultVector[i] = (bVector[i] - lhSum) / lMatrix[i][i];
-//	}
-//	
-//	return resultVector;
-//}
-//
-//double *computeGaussSeidelMethod(double *aMatrix[constants::n], 
-//	double *lMatrix[constants::n], double *uMatrix[constants::n], 
-//	double *dMatrix[constants::n], double bVector[])
-//{
-//	auto xVector = new double[constants::n] { 1.0 };
-//	auto residuumVector = new double[constants::n] { 1.0 };	//res
-//	auto bNegVector = new double[constants::n]{ -1.0 };
-//	
-//	auto d_L = addMatrices(dMatrix, lMatrix);	//D + L
-//	auto d_LInv_b = applyForwardSubstitution(d_L, bVector);	// (D + L)^-1 * b
-//	double* u_x, d_LInv_U_x;
-//	double norm = 1.0;
-//	int iteration = 0;
-//
-//	while (norm > constants::eps) {
-//
-//		++iteration;
-//		std::cout << "Iteration no.: " << iteration << " norm: "
-//			<< norm << std::endl;
-//	}
-//	return xVector;
-//}
+Vector applyForwardSubstitution(Matrix lMatrix, Vector bVector) {
+	double lhSum;
+	Vector resultVector;
+	for (auto i = 0; i < constants::n; i++) {
+		lhSum = 0;
+		for (auto j = 0; j < i; j++) {
+			lhSum += lMatrix[i][j] * resultVector[j];
+		}
+		resultVector[i] = (bVector[i] - lhSum) / lMatrix[i][i];
+	}
+	
+	return resultVector;
+}
+
+void computeGaussSeidelMethod(Matrix aMatrix, Matrix lMatrix,
+	Matrix uMatrix, Matrix dMatrix, Vector bVector)
+{
+	Vector xVector(1.0);
+	double norm = 1.0;
+	int iteration = 0;
+	auto ldMatrix = lMatrix + dMatrix;
+	auto constantMatVec = applyForwardSubstitution(ldMatrix, bVector);
+													// (L + D)^-1 * b
+	while (norm > constants::eps) {
+		xVector <= (~applyForwardSubstitution(ldMatrix, uMatrix * xVector)) + constantMatVec;
+		// x(k+1) = -(L + D)^-1 * U * x(k) + (L + D)^-1 * b
+		norm = (aMatrix * xVector + (~bVector)).computeEuclideanNorm();
+		++iteration;
+		std::cout << "Iteration no.: " << iteration << " norm: "
+			<< norm << std::endl;
+	}
+}
