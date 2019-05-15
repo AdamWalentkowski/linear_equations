@@ -29,13 +29,25 @@ Vector applyForwardSubstitution(Matrix lMatrix, Vector bVector) {
 	double lhSum;
 	Vector resultVector;
 	for (auto i = 0; i < constants::n; i++) {
-		lhSum = 0;
+		lhSum = 0.0;
 		for (auto j = 0; j < i; j++) {
 			lhSum += lMatrix[i][j] * resultVector[j];
 		}
 		resultVector[i] = (bVector[i] - lhSum) / lMatrix[i][i];
 	}
-	
+	return resultVector;
+}
+
+Vector applyBackwardSubstitution(Matrix uMatrix, Vector bVector) {
+	double lhSum;
+	Vector resultVector;
+	for (auto i = constants::n - 1; i >= 0; i--) {
+		lhSum = 0.0;
+		for (auto j = i; j < constants::n; j++) {
+			lhSum += uMatrix[i][j] * resultVector[j];
+		}
+		resultVector[i] = (bVector[i] - lhSum) / uMatrix[i][i];
+	}
 	return resultVector;
 }
 
@@ -56,4 +68,44 @@ void computeGaussSeidelMethod(Matrix aMatrix, Matrix lMatrix,
 		std::cout << "Iteration no.: " << iteration << " norm: "
 			<< norm << std::endl;
 	}
+}
+
+void computeLUFactorizationMethod(Matrix aMatrix, Vector bVector) {
+	Matrix lMatrix, uMatrix;
+
+	for (auto i = 0; i < constants::n; i++) {
+
+		// Upper Triangular 
+		for (auto j = i; j < constants::n; j++) {
+
+			// Summation of L(i, k) * U(k, j) 
+			double sum = 0.0;
+			for (auto k = 0; k < i; k++) {
+				sum += (lMatrix[i][k] * uMatrix[k][j]);
+			}
+				
+
+			// Evaluating U(i, j) 
+			uMatrix[i][j] = aMatrix[i][j] - sum;
+		}
+
+		// Lower Triangular 
+		for (auto j = i; j < constants::n; j++) {
+			if (i == j)
+				lMatrix[i][i] = 1; // Diagonal as 1 
+			else {
+
+				// Summation of L(j, k) * U(k, i) 
+				double sum = 0.0;
+				for (auto k = 0; k < i; k++)
+					sum += (lMatrix[j][k] * uMatrix[k][i]);
+
+				// Evaluating L(j, i) 
+				lMatrix[j][i] = (aMatrix[j][i] - sum) / uMatrix[i][i];
+			}
+		}
+	}
+	auto yTempVector = applyForwardSubstitution(lMatrix, bVector);
+	auto norm = (aMatrix * applyBackwardSubstitution(uMatrix, yTempVector) + ~bVector).computeEuclideanNorm();
+	std::cout << "Equations computed. Norm: " << norm << std::endl;
 }
