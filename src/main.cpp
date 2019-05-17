@@ -37,7 +37,7 @@ int main()
 	std::cout << "Computing linear equations with Jacobi's method" << std::endl;
 	auto start = std::chrono::system_clock::now();
 
-	computeJacobiMethod(coefficientMat, lowerTMat, upperTMat, diagonalMat, termVector);
+	auto normVectorJacobi = computeJacobiMethod(coefficientMat, lowerTMat, upperTMat, diagonalMat, termVector);
 
 	auto end = std::chrono::system_clock::now();
 	std::chrono::duration<double> time_result = end - start;
@@ -46,7 +46,7 @@ int main()
 	std::cout << std::endl << "Computing linear equations with Gauss-Seidel's method" << std::endl;
 	start = std::chrono::system_clock::now();
 
-	computeGaussSeidelMethod(coefficientMat, lowerTMat, upperTMat, diagonalMat, termVector);
+	auto normVectorGauss = computeGaussSeidelMethod(coefficientMat, lowerTMat, upperTMat, diagonalMat, termVector);
 
 	end = std::chrono::system_clock::now();
 	time_result = end - start;
@@ -60,5 +60,6 @@ int main()
 	end = std::chrono::system_clock::now();
 	time_result = end - start;
 	std::cout << "Time: " << time_result.count() << " seconds." << std::endl;
+
 	return 0;
 }

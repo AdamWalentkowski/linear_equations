@@ -3,7 +3,7 @@
 #include "../include/utils.hpp"
 #include "../include/matrix.hpp"
 
-void computeJacobiMethod(Matrix aMatrix,
+Vector computeJacobiMethod(Matrix aMatrix,
 	Matrix lMatrix, Matrix uMatrix,
 	Matrix dMatrix, Vector bVector);
 
@@ -13,7 +13,7 @@ Vector applyForwardSubstitution(Matrix lMatrix,
 Vector applyBackwardSubstitution(Matrix uMatrix,
 	Vector bVector);
 	
-void computeGaussSeidelMethod(Matrix aMatrix, 
+Vector computeGaussSeidelMethod(Matrix aMatrix, 
 	Matrix lMatrix, Matrix uMatrix, 
 	Matrix dMatrix, Vector bVector);
 

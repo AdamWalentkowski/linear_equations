@@ -7,3 +7,5 @@ lib/
 /linear_equations.sln
 /.vs/linear_equations/v16/Browse.VC.opendb
 /Release
+/.ipynb_checkpoints
+/Untitled.ipynb

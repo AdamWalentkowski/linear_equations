@@ -20,3 +20,10 @@ void test_vector(const Vector &vector, std::string name) {
 	}
 	std::cout << std::endl;
 }
+
+void write_to_csv(const Vector &vector, const Vector &vector2, std::string name) {
+	std::cout << std::endl << name + ": " << std::endl;
+	for (auto i = 0; vector[i] != 0 || vector2[i] != 0; i++) {
+		std::cout << vector[i] << "," << vector2[i] << std::endl;
+	}
+}

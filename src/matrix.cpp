@@ -15,9 +15,9 @@ Matrix::Matrix(double fill) {
 
 Matrix::Matrix(const Matrix &m) {
 	matrix = new double *[constants::n];
-	for (int i = 0; i < constants::n; i++) {
+	for (auto i = 0; i < constants::n; i++) {
 		matrix[i] = new double[constants::n];
-		for (int j = 0; j < constants::n; j++) {
+		for (auto j = 0; j < constants::n; j++) {
 			matrix[i][j] = m.matrix[i][j];
 		}
 	}

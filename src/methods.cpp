@@ -1,9 +1,10 @@
 #include "../include/methods.hpp"
 
-void computeJacobiMethod(Matrix aMatrix, Matrix lMatrix, 
+Vector computeJacobiMethod(Matrix aMatrix, Matrix lMatrix, 
 	Matrix uMatrix, Matrix dMatrix, Vector bVector)
 {
 	Vector xVector(1.0);
+	Vector normVector;
 	Matrix dInvMatrix;	// D^-1
 	for (auto i = 0; i < constants::n; i++) {
 		dInvMatrix[i][i] = 1.0 / dMatrix[i][i];
@@ -17,12 +18,13 @@ void computeJacobiMethod(Matrix aMatrix, Matrix lMatrix,
 	while (norm > constants::eps) {
 		xVector <= (coefficientMatVec * xVector) + constantMatVec;
 		// x(k+1) = -D^-1 * (L + U) * x(k) + (D^-1 * b)
-		norm = (aMatrix * xVector + (~bVector)).computeEuclideanNorm();
+		normVector[iteration] = norm = (aMatrix * xVector + (~bVector)).computeEuclideanNorm();
 				//res = A * x - b
 		++iteration;
 		std::cout << "Iteration no.: " << iteration << " norm: " 
 			<< norm << std::endl;
 	}
+	return normVector;
 }
 
 Vector applyForwardSubstitution(Matrix lMatrix, Vector bVector) {
@@ -51,10 +53,11 @@ Vector applyBackwardSubstitution(Matrix uMatrix, Vector bVector) {
 	return resultVector;
 }
 
-void computeGaussSeidelMethod(Matrix aMatrix, Matrix lMatrix,
+Vector computeGaussSeidelMethod(Matrix aMatrix, Matrix lMatrix,
 	Matrix uMatrix, Matrix dMatrix, Vector bVector)
 {
 	Vector xVector(1.0);
+	Vector normVector;
 	double norm = 1.0;
 	int iteration = 0;
 	auto ldMatrix = lMatrix + dMatrix;
@@ -63,43 +66,37 @@ void computeGaussSeidelMethod(Matrix aMatrix, Matrix lMatrix,
 	while (norm > constants::eps) {
 		xVector <= (~applyForwardSubstitution(ldMatrix, uMatrix * xVector)) + constantMatVec;
 		// x(k+1) = -(L + D)^-1 * U * x(k) + (L + D)^-1 * b
-		norm = (aMatrix * xVector + (~bVector)).computeEuclideanNorm();
+		normVector[iteration] = norm = (aMatrix * xVector + (~bVector)).computeEuclideanNorm();
 		++iteration;
 		std::cout << "Iteration no.: " << iteration << " norm: "
 			<< norm << std::endl;
 	}
+	return normVector;
 }
 
 void computeLUFactorizationMethod(Matrix aMatrix, Vector bVector) {
 	Matrix lMatrix, uMatrix;
 
 	for (auto i = 0; i < constants::n; i++) {
-
 		// Upper Triangular 
 		for (auto j = i; j < constants::n; j++) {
-
 			// Summation of L(i, k) * U(k, j) 
 			double sum = 0.0;
 			for (auto k = 0; k < i; k++) {
 				sum += (lMatrix[i][k] * uMatrix[k][j]);
 			}
-				
-
 			// Evaluating U(i, j) 
 			uMatrix[i][j] = aMatrix[i][j] - sum;
 		}
-
 		// Lower Triangular 
 		for (auto j = i; j < constants::n; j++) {
 			if (i == j)
 				lMatrix[i][i] = 1; // Diagonal as 1 
 			else {
-
 				// Summation of L(j, k) * U(k, i) 
 				double sum = 0.0;
 				for (auto k = 0; k < i; k++)
 					sum += (lMatrix[j][k] * uMatrix[k][i]);
-
 				// Evaluating L(j, i) 
 				lMatrix[j][i] = (aMatrix[j][i] - sum) / uMatrix[i][i];
 			}
